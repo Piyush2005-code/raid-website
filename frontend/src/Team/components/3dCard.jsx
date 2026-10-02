@@ -2,100 +2,108 @@ import React, { useRef } from "react";
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 import { FiInstagram, FiLinkedin, FiGithub } from "react-icons/fi";
 
-const Example = ({person}) => {
-  return (
-    <div className="grid w-full place-content-center bg-gradient-to-br  px-4 py-12 text-slate-900">
-      <TiltCard person={person} />
-    </div>
-  );
-};
+const ROTATION_RANGE = 20;
+const HALF_ROTATION_RANGE = ROTATION_RANGE / 2;
 
-const ROTATION_RANGE = 32.5;
-const HALF_ROTATION_RANGE = 32.5 / 2;
+/* ── Shared liquid-glass shadow ── */
+const GLASS_SHADOW = [
+  "inset 0 1px 0 rgba(255,255,255,0.07)",
+  "inset 0 -1px 0 rgba(0,0,0,0.25)",
+  "0 8px 32px rgba(0,0,0,0.45)",
+  "0 1px 0 rgba(0,0,0,0.5)",
+].join(",");
 
-const TiltCard = ({person}) => {
+const TiltCard = ({ person }) => {
   const ref = useRef(null);
-
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
-  const xSpring = useSpring(x);
-  const ySpring = useSpring(y);
-
+  const xSpring = useSpring(x, { stiffness: 200, damping: 20 });
+  const ySpring = useSpring(y, { stiffness: 200, damping: 20 });
   const transform = useMotionTemplate`rotateX(${xSpring}deg) rotateY(${ySpring}deg)`;
 
   const handleMouseMove = (e) => {
-    if (!ref.current) return [0, 0];
-
+    if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-
-    const mouseX = (e.clientX - rect.left) * ROTATION_RANGE;
-    const mouseY = (e.clientY - rect.top) * ROTATION_RANGE;
-
-    const rX = (mouseY / height - HALF_ROTATION_RANGE) * -1;
-    const rY = mouseX / width - HALF_ROTATION_RANGE;
-
+    const rX = ((e.clientY - rect.top)  / rect.height - 0.5) * -ROTATION_RANGE;
+    const rY = ((e.clientX - rect.left) / rect.width  - 0.5) *  ROTATION_RANGE;
     x.set(rX);
     y.set(rY);
   };
 
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+  const handleMouseLeave = () => { x.set(0); y.set(0); };
 
   return (
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        transformStyle: "preserve-3d",
-        transform,
-      }}
-      className="relative h-96 w-72 rounded-xl bg-gradient-to-br  to-slate-800 "
+      style={{ transformStyle: "preserve-3d", transform }}
+      /* ── Liquid glass card ── */
+      className="
+        relative w-64 overflow-hidden rounded-2xl
+        border border-white/[0.08]
+        bg-white/[0.04]
+        backdrop-blur-2xl
+      "
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      /* inline shadow keeps perspective transform */
+      // eslint-disable-next-line react/forbid-component-props
+      // @ts-ignore
+      __css={{ boxShadow: GLASS_SHADOW }}
     >
-        <div className="transition: transform 400ms ease-out hover:scale-105"
-    >
-            <img
-              className="h-[300px] w-full rounded-md object-cover hover:scale-105"
-              src={person.image}
-              alt=""
-            />
-            </div>
-       
-      <div
-        style={{
-          transform: "",
-          transformStyle: "",
-        }}
-        className="absolute top-0 left-0 w-full h-1/2 rounded-t-xl overflow-hidden"
-      >
-         
+      {/* Top shimmer accent */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+      {/* Avatar */}
+      <div className="relative overflow-hidden">
+        <img
+          src={person.image}
+          alt={person.name}
+          className="h-64 w-full object-cover"
+        />
+        {/* Bottom fade into card body */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,9,12,0.9)] via-[rgba(8,9,12,0.2)] to-transparent" />
       </div>
-      <div
-        style={{
-          transform: "",
-          transformStyle: "",
-        }}
-        className="absolute bottom-0 left-0 w-full h-1/2 rounded-b-xl p-4 flex flex-col items-center justify-center text-white"
-      >
-        </div>
-        <div className="flex flex-col items-center justify-center text-white pt-6">
-        <h2 className="text-xl font-semibold">{person.name}</h2>
-        <p className="mt-2 text-center text-sm">
+
+      {/* Info */}
+      <div className="px-5 py-4 text-center">
+        <h2 className="font-head text-base font-semibold text-gray-100">
+          {person.name}
+        </h2>
+        <p className="mt-1 font-body text-xs text-gray-500">
           {person.message}
         </p>
-        <div className="mt-4 flex space-x-4">
-          <a href={person.instagram}><FiInstagram className="text-2xl hover:text-pink-500 transition-colors cursor-pointer" /></a>
-          <a href={person.linkedin}><FiLinkedin className="text-2xl hover:text-blue-500 transition-colors cursor-pointer" /></a>
-          <a href={person.github}><FiGithub className="text-2xl hover:text-gray-400 transition-colors cursor-pointer" /></a>
+
+        {/* Social icons */}
+        <div className="mt-4 flex items-center justify-center gap-3">
+          {[
+            { href: person.instagram, Icon: FiInstagram, hover: "hover:text-pink-400" },
+            { href: person.linkedin,  Icon: FiLinkedin,  hover: "hover:text-blue-400" },
+            { href: person.github,    Icon: FiGithub,    hover: "hover:text-gray-200" },
+          ]
+            .filter(s => s.href)
+            .map(({ href, Icon, hover }) => (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`rounded-lg border border-white/[0.06] bg-white/[0.04] p-1.5 text-gray-600 transition-all hover:border-white/[0.14] hover:bg-white/[0.08] ${hover}`}
+              >
+                <Icon size={13} />
+              </a>
+            ))}
         </div>
       </div>
     </motion.div>
   );
 };
 
-export default Example;
+const TeamCard = ({ person }) => (
+  <div className="grid place-content-center px-4 py-8">
+    <TiltCard person={person} />
+  </div>
+);
+
+export default TeamCard;

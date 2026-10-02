@@ -1,59 +1,28 @@
 import React, { useRef } from "react";
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
-import { FiInstagram, FiLinkedin, FiGithub, FiMail, FiGlobe } from "react-icons/fi";
+import { FiLinkedin, FiMail, FiGlobe } from "react-icons/fi";
 import FacultyAdvisorsData from "../FacultyAdvisorsData.js";
 
-/**
- * Faculty Advisor Card
- * ─────────────────────
- * Renders a card for each entry in FacultyAdvisorsData.js.
- * To add a new faculty advisor, update FacultyAdvisorsData.js — no changes needed here.
- */
-const FAcard = () => {
-  return (
-    <div className="flex flex-wrap justify-center gap-8 px-4 py-12">
-      {FacultyAdvisorsData.map((faculty) => (
-        <TiltCard key={faculty.id} faculty={faculty} />
-      ))}
-    </div>
-  );
-};
-
-const ROTATION_RANGE = 32.5;
-const HALF_ROTATION_RANGE = 32.5 / 2;
+const ROTATION_RANGE = 18;
 
 const TiltCard = ({ faculty }) => {
   const ref = useRef(null);
-
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
-  const xSpring = useSpring(x);
-  const ySpring = useSpring(y);
-
+  const xSpring = useSpring(x, { stiffness: 180, damping: 20 });
+  const ySpring = useSpring(y, { stiffness: 180, damping: 20 });
   const transform = useMotionTemplate`rotateX(${xSpring}deg) rotateY(${ySpring}deg)`;
 
   const handleMouseMove = (e) => {
     if (!ref.current) return;
-
     const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-
-    const mouseX = (e.clientX - rect.left) * ROTATION_RANGE;
-    const mouseY = (e.clientY - rect.top) * ROTATION_RANGE;
-
-    const rX = (mouseY / height - HALF_ROTATION_RANGE) * -1;
-    const rY = mouseX / width - HALF_ROTATION_RANGE;
-
+    const rX = ((e.clientY - rect.top)  / rect.height - 0.5) * -ROTATION_RANGE;
+    const rY = ((e.clientX - rect.left) / rect.width  - 0.5) *  ROTATION_RANGE;
     x.set(rX);
     y.set(rY);
   };
 
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+  const handleMouseLeave = () => { x.set(0); y.set(0); };
 
   return (
     <motion.div
@@ -61,39 +30,70 @@ const TiltCard = ({ faculty }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ transformStyle: "preserve-3d", transform }}
-      className="relative h-96 w-72 rounded-xl bg-gradient-to-br to-slate-800"
+      whileHover={{ scale: 1.025 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="
+        relative w-64 overflow-hidden rounded-2xl
+        border border-white/[0.08] bg-white/[0.04]
+        backdrop-blur-2xl
+        shadow-[inset_0_1px_0_rgba(255,255,255,0.07),inset_0_-1px_0_rgba(0,0,0,0.25),0_8px_40px_rgba(0,0,0,0.5)]
+      "
     >
-      <div className="transition-transform duration-300 hover:scale-105">
+      {/* Top shimmer */}
+      <div className="absolute inset-x-0 top-0 z-10 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent" />
+
+      {/* Avatar */}
+      <div className="relative overflow-hidden">
         <img
-          className="h-[300px] w-full rounded-md object-cover hover:scale-105"
           src={faculty.image}
           alt={faculty.name}
+          className="h-64 w-full object-cover"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,9,12,0.92)] via-[rgba(8,9,12,0.15)] to-transparent" />
       </div>
 
-      <div className="flex flex-col items-center justify-center text-white pt-6">
-        <h2 className="text-xl font-semibold">{faculty.name}</h2>
-        <p className="mt-2 text-center text-sm text-gray-300">{faculty.title}</p>
-        <div className="mt-4 flex space-x-4">
-          {faculty.email && (
-            <a href={`mailto:${faculty.email}`} aria-label="Email">
-              <FiMail className="text-2xl hover:text-red-500 transition-colors cursor-pointer" />
-            </a>
-          )}
-          {faculty.linkedin && (
-            <a href={faculty.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <FiLinkedin className="text-2xl hover:text-blue-500 transition-colors cursor-pointer" />
-            </a>
-          )}
-          {faculty.website && (
-            <a href={faculty.website} target="_blank" rel="noopener noreferrer" aria-label="Website">
-              <FiGlobe className="text-2xl hover:text-green-400 transition-colors cursor-pointer" />
-            </a>
-          )}
+      {/* Info */}
+      <div className="px-5 py-4 text-center">
+        <h2 className="font-head text-base font-semibold text-gray-100">
+          {faculty.name}
+        </h2>
+        {faculty.title && (
+          <p className="mt-1 font-mono text-[0.7rem] tracking-wide text-gray-500">
+            {faculty.title}
+          </p>
+        )}
+
+        {/* Social icons */}
+        <div className="mt-4 flex items-center justify-center gap-3">
+          {[
+            { href: faculty.email ? `mailto:${faculty.email}` : null, Icon: FiMail, hover: "hover:text-red-400" },
+            { href: faculty.linkedin,  Icon: FiLinkedin,  hover: "hover:text-blue-400" },
+            { href: faculty.website,    Icon: FiGlobe,    hover: "hover:text-green-400" },
+          ]
+            .filter(s => s.href)
+            .map(({ href, Icon, hover }) => (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`rounded-lg border border-white/[0.06] bg-white/[0.04] p-1.5 text-gray-600 transition-all hover:border-white/[0.14] hover:bg-white/[0.09] ${hover}`}
+              >
+                <Icon size={13} />
+              </a>
+            ))}
         </div>
       </div>
     </motion.div>
   );
 };
+
+const FAcard = () => (
+  <div className="flex flex-wrap justify-center gap-8 px-4 py-8">
+    {FacultyAdvisorsData.map((faculty) => (
+      <TiltCard key={faculty.id} faculty={faculty} />
+    ))}
+  </div>
+);
 
 export default FAcard;

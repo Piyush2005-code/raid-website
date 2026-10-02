@@ -1,56 +1,124 @@
 import React, { useEffect } from "react";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiUsers } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import DimensionalField from "@/components/ui/dimensional-field";
+import { LiquidButton } from "@/components/ui/liquid-glass-button";
 
 import Aos from "aos";
 import "aos/dist/aos.css";
 
+/* ── stagger children on mount ── */
+const containerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.13 } },
+};
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.72, ease: [0.16, 1, 0.3, 1] } },
+};
+
 const Hero = () => {
   useEffect(() => {
     Aos.init({ duration: 1000 });
-  });
+  }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050608]">
-      {/* ── DimensionalField WebGL background ── */}
+    <section className="relative min-h-screen overflow-hidden bg-[#050608]">
+
+      {/* ── DimensionalField WebGL bubbles ── */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <DimensionalField className="w-full h-full" />
       </div>
 
-      {/* ── Subtle dark vignette so text stays readable ── */}
-      <div className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+      {/* ── Gradient vignette — left-heavy so text stays legible ── */}
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#050608]/90 via-[#050608]/60 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-[#050608]/50 via-transparent to-[#050608]/80" />
 
-      {/* ── Hero content ── */}
-      <div
-        className="relative z-[2] flex flex-col items-center px-4 text-gray-200"
-        data-aos="fade-up"
-      >
-        {/* Main heading — Space Grotesk */}
-        <h1 className="font-head max-w-3xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-center text-3xl font-semibold leading-tight text-transparent sm:text-5xl sm:leading-tight md:text-7xl md:leading-tight">
-          Realm of Artificial Intelligence and Data
-        </h1>
-
-        {/* Sub-text — Inter */}
-        <p className="font-body my-6 max-w-xl text-center text-base leading-relaxed text-gray-300 md:text-lg md:leading-relaxed font-light">
-          We at RAID, the AI Society of IIT Jodhpur, are dedicated to
-          innovation in artificial intelligence.
-        </p>
-
-
-        {/* CTA button */}
+      {/* ── Content — left-aligned ── */}
+      <div className="relative z-[2] flex min-h-screen flex-col justify-center px-6 pb-24 pt-28 sm:px-14 lg:px-24">
         <motion.div
-          whileHover={{ scale: 1.015 }}
-          whileTap={{ scale: 0.985 }}
+          className="max-w-3xl"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
         >
-          <Link
-            to="/projects"
-            className="group relative flex w-fit items-center gap-2 rounded-full border border-white/20 bg-gray-950/30 px-6 py-2.5 text-sm text-gray-50 backdrop-blur-sm transition-colors hover:bg-gray-950/60"
+          {/* Pre-label */}
+          <motion.div variants={itemVariants} className="mb-8 flex items-center gap-3">
+            <span className="h-px w-9 bg-white/30" />
+            <span className="font-mono text-[0.68rem] tracking-[0.22em] text-gray-400 uppercase">
+              AI Society · IIT Jodhpur
+            </span>
+          </motion.div>
+
+          {/* Heading — Barlow Condensed ExtraBold */}
+          <motion.h1
+            variants={itemVariants}
+            className="font-display text-[clamp(3.4rem,12vw,9.5rem)] font-extrabold uppercase leading-[0.9] tracking-tight text-white"
           >
-            Explore Projects
-            <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-          </Link>
+            Realm{" "}
+            <span className="text-white/20" style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.25)" }}>
+              of
+            </span>
+            <br className="hidden sm:block" />
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(105deg, #e2e8f0 0%, #94a3b8 60%, #cbd5e1 100%)",
+                WebkitBackgroundClip: "text",
+              }}
+            >
+              Artificial
+            </span>
+            <br className="hidden sm:block" />
+            Intelligence
+            <br className="hidden sm:block" />
+            <span className="text-white/40 text-[0.55em]">&amp; Data</span>
+          </motion.h1>
+
+          {/* Body text */}
+          <motion.p
+            variants={itemVariants}
+            className="mt-8 max-w-md font-body text-[0.9rem] leading-relaxed text-gray-400"
+          >
+            We build intelligent systems, publish research, and grow the next
+            generation of AI engineers — one project, one paper, one breakthrough
+            at a time.
+          </motion.p>
+
+          {/* CTA row — liquid glass buttons */}
+          <motion.div variants={itemVariants} className="mt-10 flex flex-wrap items-center gap-4">
+
+            {/* Primary: Explore Projects */}
+            <Link to="/projects">
+              <LiquidButton size="lg" variant="default" className="font-mono font-medium tracking-wide text-white/90">
+                Explore Projects
+                <FiArrowRight />
+              </LiquidButton>
+            </Link>
+
+            {/* Secondary: Meet the Team */}
+            <Link to="/teams">
+              <LiquidButton size="lg" variant="ghost" className="font-mono font-medium tracking-wide text-white/60">
+                <FiUsers />
+                Meet the Team
+              </LiquidButton>
+            </Link>
+          </motion.div>
+
+          {/* Scroll hint */}
+          <motion.div variants={itemVariants} className="mt-16 flex items-center gap-3">
+            <div className="relative h-10 w-px overflow-hidden bg-white/10">
+              <motion.div
+                className="absolute top-0 h-full w-full bg-white/40"
+                animate={{ y: ["-100%", "200%"] }}
+                transition={{ repeat: Infinity, duration: 1.8, ease: "linear" }}
+              />
+            </div>
+            <span className="font-mono text-[0.6rem] tracking-[0.22em] text-gray-600 uppercase">
+              Scroll to explore
+            </span>
+          </motion.div>
         </motion.div>
       </div>
     </section>

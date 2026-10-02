@@ -4,64 +4,41 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import Example from "./AlumniCard";
 
-
 function Alumni() {
   useEffect(() => {
     Aos.init({ duration: 700 });
   }, []);
 
   return (
-    <>
-      <div className="bg-black">
-        <div className="pt-24">
-          <section class="bg-white dark:bg-black" data-aos="fade-up">
-            <div class="py-20 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-              <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                Our Esteemed Alumni
-              </h1>
-              <p class="mt-8 mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-              "Our esteemed alumni pioneered RAID, the AI society of IIT Jodhpur, and their visionary leadership still inspires innovation today."
-              </p>
-            </div>
-          </section>
-        </div>
-
-        {/* Displaying Coordinators */}
-        <div
-          className="flex items-center justify-center mt-0 mb-16"
-          data-aos="fade-up"
-        >
-          <div className="w-12 h-0.5 md:w-48 md:h-0.5 bg-gray-500"></div>
-          <h2 className="text-white text-xl font-bold mx-4 md:text-2xl">
-            PIONEERS OF RAID
-          </h2>
-          <div className="w-12 h-0.5 md:w-48 md:h-0.5 bg-gray-500"></div>
-        </div>
-
-        {/* Displaying Core members */}
-        <div className="flex items-center justify-center" data-aos="fade-up">
-          <div
-            className="grid gap-6 mt-[-20px] mx-auto max-w-screen-xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            data-aos="fade-up"
-          >
-            {Data.map((person) => (
-              <Example
-                key={person.id}
-                name={person.status}
-                person={person}
-                image={person.image}
-                message={person.message}
-                data-aos="fade-up"
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Displaying Faculty advisior */}
-
+    <div className="min-h-screen bg-[#050608] pb-40 pt-32">
+      {/* ── Header Section ── */}
+      <div className="flex flex-col items-center justify-center px-6 text-center" data-aos="fade-up">
+        <span className="mb-4 block font-mono text-[0.65rem] tracking-[0.22em] text-gray-500 uppercase">
+          The Legacy
+        </span>
+        <h1 className="font-display text-5xl font-extrabold uppercase tracking-tight text-white sm:text-6xl md:text-7xl">
+          Our Alumni
+        </h1>
+        <p className="mt-6 max-w-2xl font-body text-sm leading-relaxed text-gray-400 sm:text-base">
+          Our esteemed alumni pioneered RAID, the AI society of IIT Jodhpur, and their visionary leadership still inspires innovation today.
+        </p>
       </div>
-      <div className="mb-40"></div>
-    </>
+
+      {/* ── Pioneers ── */}
+      <div className="mt-20 flex items-center justify-center gap-4 px-6" data-aos="fade-up">
+        <div className="h-px w-12 bg-white/10 md:w-32" />
+        <h2 className="font-head text-lg font-bold tracking-widest text-gray-300 md:text-xl uppercase">
+          Pioneers of RAID
+        </h2>
+        <div className="h-px w-12 bg-white/10 md:w-32" />
+      </div>
+
+      <div className="mx-auto mt-8 flex max-w-7xl flex-wrap justify-center gap-8 px-6" data-aos="fade-up">
+        {Data.map((person) => (
+          <Example key={person.id} person={person} />
+        ))}
+      </div>
+    </div>
   );
 }
 
