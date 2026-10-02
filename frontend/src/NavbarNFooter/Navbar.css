@@ -1,51 +1,254 @@
-.navbar{
-    height: 60px;
-    width: 100%;
+/* ═══════════════════════════════════════════════════════════════
+   RAID NAVBAR  —  Metal / Glass  style
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Base: always fixed, transparent until scrolled ── */
+.raid-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  transition:
+    background   0.35s ease,
+    backdrop-filter 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow   0.35s ease;
+
+  /* Transparent by default — the hero WebGL fills behind it */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+}
+
+/* ── Scrolled: full glass panel ── */
+.raid-nav.scrolled {
+  background: rgba(5, 6, 8, 0.72);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(100, 200, 255, 0.10);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.04),
+    0 8px 32px -8px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Inner container ── */
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGO
+   ═══════════════════════════════════════════════════════════════ */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo-img {
+  height: 44px;
+  width: auto;
+  border-radius: 6px;
+  object-fit: contain;
+  /* Subtle metal sheen on the logo */
+  filter: drop-shadow(0 0 8px rgba(0, 255, 204, 0.18));
+  transition: filter 0.3s ease;
+}
+
+.nav-logo:hover .nav-logo-img {
+  filter: drop-shadow(0 0 14px rgba(0, 255, 204, 0.38));
+}
+
+.nav-logo-text {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  color: var(--txt);
+  /* Metal gradient text */
+  background: linear-gradient(135deg, #ffffff 30%, #8ab4d4 70%, #00FFCC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP LINKS
+   ═══════════════════════════════════════════════════════════════ */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.25rem;
+}
+
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(240, 240, 240, 0.65);
+  text-decoration: none;
+  letter-spacing: 0.025em;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+/* Animated underline */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--cyan), var(--accent));
+  transform: scaleX(0);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+  border-radius: 1px;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── CTA "Contact" button ── */
+.nav-links .nav-cta {
+  padding: 0.5rem 1.35rem;
+  border: 1px solid rgba(0, 212, 255, 0.28);
+  background: rgba(0, 212, 255, 0.06);
+  color: var(--cyan) !important;
+  border-radius: 4px;
+  font-size: 0.8rem !important;
+  font-weight: 500;
+  letter-spacing: 0.08em !important;
+  transition: background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease !important;
+  /* Metal shimmer on the button */
+  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.08), 0 0 0 0 transparent;
+}
+
+.nav-links .nav-cta::after {
+  display: none !important;
+}
+
+.nav-links .nav-cta:hover {
+  background: rgba(0, 212, 255, 0.14) !important;
+  border-color: rgba(0, 212, 255, 0.6) !important;
+  box-shadow: 0 0 18px rgba(0, 212, 255, 0.15), inset 0 1px 0 0 rgba(255,255,255,0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HAMBURGER
+   ═══════════════════════════════════════════════════════════════ */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.nav-hamburger:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 1.8px;
+  background: rgba(240, 240, 240, 0.8);
+  border-radius: 2px;
+  transform-origin: center;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+/* X animation when open */
+.hamburger-line.open:nth-child(1) { transform: translateY(6.8px) rotate(45deg); }
+.hamburger-line.open:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger-line.open:nth-child(3) { transform: translateY(-6.8px) rotate(-45deg); }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE MENU
+   ═══════════════════════════════════════════════════════════════ */
+.nav-mobile {
+  display: none;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  right: 0;
+
+  /* Glass panel */
+  background: rgba(5, 6, 8, 0.92);
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  border-bottom: 1px solid rgba(100, 200, 255, 0.10);
+  box-shadow: 0 16px 48px -8px rgba(0, 0, 0, 0.7);
+
+  padding: 0.5rem 0 1rem;
+
+  /* Slide-in animation */
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.nav-mobile.open {
+  display: block;  /* keep display:block so transition fires */
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-mobile a {
+  display: block;
+  padding: 0.85rem 2rem;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(240, 240, 240, 0.65);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: color 0.2s ease, background 0.2s ease, padding-left 0.2s ease;
+  border-left: 2px solid transparent;
+}
+
+.nav-mobile a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+  padding-left: 2.4rem;
+  border-left-color: var(--cyan);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .nav-hamburger {
     display: flex;
-    background-color: black;
-    border-bottom: 2px solid gray;
-    border-top: 2px solid gray;
-}
+  }
 
-.navbar-buttons{
-    height: 60px;
-    text-align: center;
-    padding: 20px;
-    margin: 0px 10px;
-    box-sizing: border-box;
-    font-weight: 600;
-    transition: 200ms;
-    a {
-        color: white;
-    }
-    & a:hover{
-        color: rgb(255, 68, 0);
-    }
-}
-
-.nav-bottom-border{
-    height: 2px;
-    background-color: white;
-    position: absolute;
-    right: 0px;
-    top: 60px;
-    animation: cover 5s ease-in infinite;
-}
-
-.nav-top-border{
-    height: 2px;
-    background-color: white;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    animation: cover 5s ease-in infinite;
-}
-
-@keyframes cover{
-    0%{
-        width: 0px;
-    }
-    100%{
-        width: 100%;
-    }
+  .nav-mobile.open {
+    display: block;
+  }
 }

@@ -37,8 +37,8 @@ const TiltCard = ({person}) => {
     const rX = (mouseY / height - HALF_ROTATION_RANGE) * -1;
     const rY = mouseX / width - HALF_ROTATION_RANGE;
 
-    x.set();
-    y.set();
+    x.set(rX);
+    y.set(rY);
   };
 
   const handleMouseLeave = () => {
@@ -52,7 +52,7 @@ const TiltCard = ({person}) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        transformStyle: "",
+        transformStyle: "preserve-3d",
         transform,
       }}
       className="relative h-96 w-72 rounded-xl bg-gradient-to-br  to-slate-800 "

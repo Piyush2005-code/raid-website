@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import Data from "./CoordinatorData.json";
-import CoreData from "./CoreMemberData.json";
-import mentorData from "./Mentors.json"
+import Data from "./CoordinatorData.js";
+import CoreData from "./CoreMemberData.js";
+import mentorData from "./MentorsData.js"
+import facultyData from "./FacultyAdvisorsData.js"
 import Aos from "aos";
 import "aos/dist/aos.css";
 import Example from "./components/3dCard";

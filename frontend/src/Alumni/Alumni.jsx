@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Data from "./Alumni_data.json";
+import Data from "./AlumniData.js";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import Example from "./AlumniCard";

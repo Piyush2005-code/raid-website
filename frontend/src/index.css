@@ -1,3 +1,77 @@
+/* ── Global CSS variables ── */
+:root {
+  /* Typography */
+  --font-head:  'Space Grotesk', system-ui, sans-serif;
+  --font-body:  'Inter', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Fira Code', monospace;
+  --font-ui:    'Inter', system-ui, sans-serif;
+
+  /* Colour palette (matches DimensionalField theme) */
+  --bg:         #050608;
+  --txt:        #f0f0f0;
+  --muted:      #8a8fa8;
+  --border:     rgba(255, 255, 255, 0.07);
+  --accent:     #00FFCC;   /* cyan-green */
+  --cyan:       #22d3ee;   /* tailwind cyan-400 */
+  --cyan2:      #818cf8;   /* indigo */
+  --glow-c:     rgba(0, 255, 204, 0.4);
+}
+
+/* ── Tailwind layers ── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── Base resets / global font application ── */
+html, body {
+  height: 100%;
+  background-color: var(--bg);
+  color: var(--txt);
+
+  /* Apply Inter as the default body font */
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings → Space Grotesk */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-head);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Mono / code elements → JetBrains Mono */
+code, pre, kbd, samp, .font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Scrollbar hidden globally */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+input:focus-visible {
+  outline: none;
+}
+
+/* ── Tailwind typography override — ensures Tailwind prose classes
+       also use our fonts ── */
+@layer base {
+  body {
+    @apply font-sans;
+  }
+}

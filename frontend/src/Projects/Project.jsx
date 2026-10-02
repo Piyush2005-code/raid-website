@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Project.css';
 import Modal from './Proj-widgets/Modal';
-import ProjectData from './ProjectData.json';
+import ProjectData from './ProjectData.js';
 import ProjectCard from './Proj-widgets/ProjectCards';
 import Aos from 'aos';
 import 'aos/dist/aos.css';

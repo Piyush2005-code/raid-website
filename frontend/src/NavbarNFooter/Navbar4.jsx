@@ -1,67 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-//   useEffect(() => {
-//     if (isOpen) {
-//       document.body.classList.add('no-scroll');
-//     } else {
-//       document.body.classList.remove('no-scroll');
-//     }
-//     // Cleanup on component unmount
-//     return () => document.body.classList.remove('no-scroll');
-//     }, [isOpen]);
+  /* ── Scroll detection for glass effect ── */
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav className="fixed w-full z-20 bg-black shadow-md">
-      <div className="flex items-center justify-between p-4 max-w-6xl mx-auto">
-        {/* Logo Section */}
-                {/* Logo Section with Image */}
-                <div className="flex-shrink-0">
-          <a href="/">
-            <img src="/RAID_logo.jpeg" alt="MySite Logo" className="h-14 w-auto" />
-          </a>
-          </div>
+    <nav className={`raid-nav${scrolled ? ' scrolled' : ''}`}>
+      <div className="nav-inner">
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex space-x-8 text-xl">
-          <a href="/" className="text-white font-bold hover:text-orange-700">Home</a>
-          <a href="projects" className="text-white font-bold hover:text-orange-700">Projects</a>
-          <a href="/teams" className="text-white font-bold hover:text-orange-700">Team</a>
-          <a href="/Alumni" className="text-white font-bold hover:text-orange-700">Alumni</a>
-          <a href="/contactus" className="text-white font-bold hover:text-orange-700">Contact</a>
+        {/* ── Logo ── */}
+        <Link to="/" className="nav-logo" onClick={closeMenu}>
+          <img src="/RAID_logo.jpeg" alt="RAID" className="nav-logo-img" />
+          <span className="nav-logo-text">RAID</span>
+        </Link>
+
+        {/* ── Desktop links ── */}
+        <div className="nav-links">
+          <Link to="/">Home</Link>
+          <Link to="/projects">Projects</Link>
+          <Link to="/teams">Team</Link>
+          <Link to="/Alumni">Alumni</Link>
+          <Link to="/contactus" className="nav-cta">Contact</Link>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button 
-          onClick={() => setIsOpen(true)} 
-          className="md:hidden focus:outline-none text-3xl"
+        {/* ── Mobile hamburger ── */}
+        <button
+          className="nav-hamburger"
+          aria-label="Toggle navigation menu"
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen(prev => !prev)}
         >
-          &#9776;
+          <span className={`hamburger-line${isOpen ? ' open' : ''}`} />
+          <span className={`hamburger-line${isOpen ? ' open' : ''}`} />
+          <span className={`hamburger-line${isOpen ? ' open' : ''}`} />
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      <div 
-        className={`fixed inset-0 bg-black bg-opacity-100 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out md:hidden`}
-      >
-        {/* Close Button */}
-        <button 
-          onClick={() => setIsOpen(false)} 
-          className="absolute top-4 right-4 text-3xl text-white"
-        >
-          &times;
-        </button>
-
-        {/* Mobile Menu Links */}
-        <div className="flex flex-col items-center justify-center h-full space-y-6 text-white text-2xl font-bold">
-          <a href="/" onClick={() => setIsOpen(false)}>Home</a>
-          <a href="projects" onClick={() => setIsOpen(false)}>Projects</a>
-          <a href="/teams" onClick={() => setIsOpen(false)}>Team</a>
-          <a href="/Alumni" onClick={() => setIsOpen(false)}>Alumni</a>
-          <a href="/contactus" onClick={() => setIsOpen(false)}>Contact</a>
-        </div>
+      {/* ── Mobile menu ── */}
+      <div className={`nav-mobile${isOpen ? ' open' : ''}`} aria-hidden={!isOpen}>
+        <Link to="/" onClick={closeMenu}>Home</Link>
+        <Link to="/projects" onClick={closeMenu}>Projects</Link>
+        <Link to="/teams" onClick={closeMenu}>Team</Link>
+        <Link to="/Alumni" onClick={closeMenu}>Alumni</Link>
+        <Link to="/contactus" onClick={closeMenu}>Contact</Link>
       </div>
     </nav>
   );

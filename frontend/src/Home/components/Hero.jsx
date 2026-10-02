@@ -1,89 +1,60 @@
-
-import { Canvas } from "@react-three/fiber";
 import React, { useEffect } from "react";
 import { FiArrowRight } from "react-icons/fi";
-import {
-  useMotionTemplate,
-  useMotionValue,
-  motion,
-  animate,
-} from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import DimensionalField from "@/components/ui/dimensional-field";
 
-import Aos from 'aos';
-import 'aos/dist/aos.css';
-
-const COLORS_TOP = ["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"];
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const Hero = () => {
   useEffect(() => {
     Aos.init({ duration: 1000 });
-  })
-
-  const color = useMotionValue(COLORS_TOP[0]);
-
-  useEffect(() => {
-    animate(color, COLORS_TOP, {
-      ease: "easeInOut",
-      duration: 10,
-      repeat: Infinity,
-      repeatType: "mirror",
-    });
-  }, []);
-
-  const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
-  const border = useMotionTemplate`1px solid ${color}`;
-  const boxShadow = useMotionTemplate`0px 4px 24px ${color}`;
+  });
 
   return (
-    <>
-    
-    <motion.section
-      style={{
-        backgroundImage,
-      }}
-      className="relative grid min-h-screen place-content-center overflow-hidden bg-black px-4 py text-gray-200 md:py-8"
-    >
-    {/* <div className="mb-36">
-        <Navbar />
-    </div> */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050608]">
+      {/* ── DimensionalField WebGL background ── */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <DimensionalField className="w-full h-full" />
+      </div>
 
-      <div className="relative z-10 flex flex-col items-center" data-aos="fade-up">
-        {/* <span className="mb-1.5 inline-block rounded-full bg-gray-600/50 px-3 py-1.5 text-sm">
-          Summer RAID Live now!
-        </span> */}
-        <h1 className="max-w-3xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-center text-3xl font-medium leading-tight text-transparent sm:text-5xl sm:leading-tight md:text-7xl md:leading-tight">
-        Realm of Artificial Intelligence and Data
+      {/* ── Subtle dark vignette so text stays readable ── */}
+      <div className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+
+      {/* ── Hero content ── */}
+      <div
+        className="relative z-[2] flex flex-col items-center px-4 text-gray-200"
+        data-aos="fade-up"
+      >
+        {/* Main heading — Space Grotesk */}
+        <h1 className="font-head max-w-3xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-center text-3xl font-semibold leading-tight text-transparent sm:text-5xl sm:leading-tight md:text-7xl md:leading-tight">
+          Realm of Artificial Intelligence and Data
         </h1>
-        <p className="my-6 max-w-xl text-center text-base leading-relaxed md:text-lg md:leading-relaxed">
-          We at RAID, the AI Society of IIT Jodhpur, are dedicated to innovation in artificial intelligence. 
-        </p>
-        <motion.button
-          style={{
-            border,
-            boxShadow,
-          }}
-          whileHover={{
-            scale: 1.015,
-          }}
-          whileTap={{
-            scale: 0.985,
-          }}
-          className="group relative flex w-fit items-center gap-1.5 rounded-full bg-gray-950/10 px-4 py-2 text-gray-50 transition-colors hover:bg-gray-950/50"
-        >
-          <Link to='/projects'>Projects</Link>
-          <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-        </motion.button>
-      </div>
 
-      <div className="absolute inset-0 z-0">
-        <Canvas>
-          {/* <Stars radius={50} count={2500} factor={4} fade speed={2} /> */}
-        </Canvas>
+        {/* Sub-text — Inter */}
+        <p className="font-body my-6 max-w-xl text-center text-base leading-relaxed text-gray-300 md:text-lg md:leading-relaxed font-light">
+          We at RAID, the AI Society of IIT Jodhpur, are dedicated to
+          innovation in artificial intelligence.
+        </p>
+
+
+        {/* CTA button */}
+        <motion.div
+          whileHover={{ scale: 1.015 }}
+          whileTap={{ scale: 0.985 }}
+        >
+          <Link
+            to="/projects"
+            className="group relative flex w-fit items-center gap-2 rounded-full border border-white/20 bg-gray-950/30 px-6 py-2.5 text-sm text-gray-50 backdrop-blur-sm transition-colors hover:bg-gray-950/60"
+          >
+            Explore Projects
+            <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
+          </Link>
+        </motion.div>
       </div>
-    </motion.section>
-    </>
+    </section>
   );
 };
 
-export default Hero
+export default Hero;

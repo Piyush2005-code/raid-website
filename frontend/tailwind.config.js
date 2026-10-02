@@ -5,8 +5,18 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        // Maps to the CSS variables defined in index.css
+        // Usage: className="font-head" / "font-body" / "font-mono"
+        head:  ['Space Grotesk', 'system-ui', 'sans-serif'],
+        body:  ['Inter', 'system-ui', 'sans-serif'],
+        mono:  ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans:  ['Inter', 'system-ui', 'sans-serif'],  // overrides Tailwind default sans
+      },
+    },
   },
+
   plugins: [
     require('daisyui'),
   ],
