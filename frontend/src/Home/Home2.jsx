@@ -13,7 +13,7 @@ function Home2() {
   }, []);
 
   return (
-    <div className="bg-[#050608] min-h-screen">
+    <div className="min-h-screen">
       <Hero />
       <div data-aos="fade-up">
         <About />

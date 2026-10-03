@@ -47,7 +47,7 @@ const glassCard =
 
 export function About() {
   return (
-    <section id="about" className="relative bg-[#050608] px-6 py-24 sm:px-14 lg:px-24">
+    <section id="about" className="relative px-6 py-24 sm:px-14 lg:px-24">
 
       {/* ── Section divider ── */}
       <div className="mb-16 flex items-center gap-4">
@@ -58,7 +58,7 @@ export function About() {
 
       {/* ── Heading ── */}
       <div className="mb-14 max-w-2xl">
-        <h2 className="font-display text-5xl font-bold uppercase leading-tight tracking-tight text-white sm:text-6xl">
+        <h2 className="font-head text-5xl font-bold leading-tight tracking-tight text-white sm:text-6xl">
           Building AI engineers
           <br />
           <span className="text-white/30">from scratch</span>

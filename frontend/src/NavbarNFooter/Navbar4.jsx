@@ -31,6 +31,8 @@ const Navbar = () => {
           <Link to="/projects">Projects</Link>
           <Link to="/teams">Team</Link>
           <Link to="/Alumni">Alumni</Link>
+          <Link to="/achievements">Achievements</Link>
+          <Link to="/blogs">Blogs</Link>
           <Link to="/contactus" className="nav-cta">Contact</Link>
         </div>
 
@@ -53,6 +55,8 @@ const Navbar = () => {
         <Link to="/projects" onClick={closeMenu}>Projects</Link>
         <Link to="/teams" onClick={closeMenu}>Team</Link>
         <Link to="/Alumni" onClick={closeMenu}>Alumni</Link>
+        <Link to="/achievements" onClick={closeMenu}>Achievements</Link>
+        <Link to="/blogs" onClick={closeMenu}>Blogs</Link>
         <Link to="/contactus" onClick={closeMenu}>Contact</Link>
       </div>
     </nav>

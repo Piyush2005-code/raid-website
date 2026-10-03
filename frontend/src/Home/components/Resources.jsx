@@ -51,7 +51,7 @@ export const BouncyCardsFeatures = () => {
           <span className="mb-2 block font-mono text-[0.65rem] tracking-[0.22em] text-gray-600 uppercase">
             Start here
           </span>
-          <h2 className="font-display text-5xl font-bold uppercase leading-tight tracking-tight text-white sm:text-6xl">
+          <h2 className="font-head text-5xl font-bold leading-tight tracking-tight text-white sm:text-6xl">
             Resources
           </h2>
           <p className="mt-3 max-w-sm font-body text-sm leading-relaxed text-gray-500">

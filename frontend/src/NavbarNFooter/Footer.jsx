@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="relative mt-20 border-t border-white/[0.05] bg-[#050608] px-6 py-12 sm:px-14 lg:px-24">
+    <footer className="relative mt-20 border-t border-white/[0.05] px-6 py-12 sm:px-14 lg:px-24">
       {/* ── Matte dark gradient background ── */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent to-[#0a0b0f] pointer-events-none" />
 

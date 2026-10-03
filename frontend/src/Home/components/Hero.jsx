@@ -24,7 +24,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#050608]">
+    <section className="relative min-h-screen overflow-hidden bg-[#0b101e]">
 
       {/* ── DimensionalField WebGL bubbles ── */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -64,7 +64,7 @@ const Hero = () => {
             <span
               className="bg-clip-text text-transparent"
               style={{
-                backgroundImage: "linear-gradient(105deg, #e2e8f0 0%, #94a3b8 60%, #cbd5e1 100%)",
+                backgroundImage: "linear-gradient(105deg, #7dd3fc 0%, #38bdf8 40%, #818cf8 100%)",
                 WebkitBackgroundClip: "text",
               }}
             >
@@ -73,7 +73,15 @@ const Hero = () => {
             <br className="hidden sm:block" />
             Intelligence
             <br className="hidden sm:block" />
-            <span className="text-white/40 text-[0.55em]">&amp; Data</span>
+            <span
+              className="bg-clip-text text-transparent text-[0.7em]"
+              style={{
+                backgroundImage: "linear-gradient(105deg, #94a3b8 0%, #7dd3fc 60%, #818cf8 100%)",
+                WebkitBackgroundClip: "text",
+              }}
+            >
+              &amp; Data
+            </span>
           </motion.h1>
 
           {/* Body text */}

@@ -13,13 +13,13 @@ function Team() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#050608] pb-40 pt-32">
+    <div className="min-h-screen pb-40 pt-32">
       {/* ── Header Section ── */}
       <div className="flex flex-col items-center justify-center px-6 text-center" data-aos="fade-up">
         <span className="mb-4 block font-mono text-[0.65rem] tracking-[0.22em] text-gray-500 uppercase">
           The People
         </span>
-        <h1 className="font-display text-5xl font-extrabold uppercase tracking-tight text-white sm:text-6xl md:text-7xl">
+        <h1 className="font-head text-5xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl">
           Our Team
         </h1>
         <p className="mt-6 max-w-2xl font-body text-sm leading-relaxed text-gray-400 sm:text-base">
